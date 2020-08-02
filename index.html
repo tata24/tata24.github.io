@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
@@ -26,7 +26,7 @@
 <meta property="og:url" content="http://yoursite.com/index.html">
 <meta property="og:site_name" content="tata的博客">
 <meta property="og:description" content="a good boy">
-<meta property="og:locale" content="en_US">
+<meta property="og:locale" content="zh_CN">
 <meta property="article:author" content="tata">
 <meta name="twitter:card" content="summary">
 
@@ -39,7 +39,7 @@
     sidebar: "",
     isHome : true,
     isPost : false,
-    lang   : 'en'
+    lang   : 'zh-CN'
   };
 </script>
 
@@ -83,7 +83,7 @@
     <header class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-container">
   <div class="site-nav-toggle">
-    <div class="toggle" aria-label="Toggle navigation bar">
+    <div class="toggle" aria-label="切换导航栏">
       <span class="toggle-line toggle-line-first"></span>
       <span class="toggle-line toggle-line-middle"></span>
       <span class="toggle-line toggle-line-last"></span>
@@ -144,6 +144,7 @@
     <i class="fa fa-arrow-up"></i>
     <span>0%</span>
   </div>
+  <div class="reading-progress-bar"></div>
 
 
     <main class="main">
@@ -156,7 +157,7 @@
       
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/02/Tensor%E4%B8%AD%E7%9A%84requires-grad%E5%92%8Cis-leaf/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -179,16 +180,22 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
+              <span class="post-meta-item-text">发表于</span>
 
-              <time title="Created: 2020-08-02 16:34:35 / Modified: 16:55:38" itemprop="dateCreated datePublished" datetime="2020-08-02T16:34:35+08:00">2020-08-02</time>
+              <time title="创建时间：2020-08-02 16:34:35" itemprop="dateCreated datePublished" datetime="2020-08-02T16:34:35+08:00">2020-08-02</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-08-03 01:19:13" itemprop="dateModified" datetime="2020-08-03T01:19:13+08:00">2020-08-03</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
-              <span class="post-meta-item-text">In</span>
+              <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">深度学习</span></a>
                 </span>
@@ -205,45 +212,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h3 id="一个简单的pytorch程序"><a href="#一个简单的pytorch程序" class="headerlink" title="一个简单的pytorch程序"></a>一个简单的pytorch程序</h3><p>pytorch是一种动态图计算的语言，每次向前传播过程中都会构建一个计算图，而每次反向传播的时候会计算梯度，完成梯度更新并销毁计算图。</p>
-<p>先看一下一个简单的向前传播和反向传播：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 输入与标签</span></span><br><span class="line">x = torch.tensor([[<span class="number">3.</span>, <span class="number">2.</span>]])  <span class="comment"># torch.Size([1, 2])</span></span><br><span class="line">label = torch.tensor([<span class="number">1.</span>])    <span class="comment"># torch.Size([1])</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 初始化网络参数</span></span><br><span class="line">w1 = torch.ones(<span class="number">2</span>, <span class="number">3</span>, requires_grad=<span class="literal">True</span>)  <span class="comment">#  torch.Size([2, 3])</span></span><br><span class="line">w2 = torch.ones(<span class="number">3</span>, <span class="number">1</span>, requires_grad=<span class="literal">True</span>)  <span class="comment">#  torch.Size([3, 1])</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 向前传播</span></span><br><span class="line">z = torch.matmul(x, w1)</span><br><span class="line">h = torch.relu(z)</span><br><span class="line">o = torch.matmul(h, w2)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 计算损失</span></span><br><span class="line">loss = (o - label)**<span class="number">2</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 反向传播</span></span><br><span class="line">l.backward()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h3 id="向前传播构建计算图"><a href="#向前传播构建计算图" class="headerlink" title="向前传播构建计算图"></a>向前传播构建计算图</h3><p>上面的代码简单构建了一个神经网络模型，为了方便，我将参数都初始化为1，并且没有算上偏置项。</p>
-<p>整个模型可以通过一个方程来表示：$loss = (relu(xw_1)w_2-label)^2$ ，其中$z = xw_1,h=relu(z1),o=hw_2$ </p>
-<p>在数据的向前传播过程中，pytorch构建了如下的计算图，计算图是数据加上运算操作的流程图，其中方框中代表时是tensor，也就是数据，圆圈中代表的是运算操作，任何神经网络都代表了一张计算图，只不过复杂的神经网络需要用更加复杂的计算图表示。</p>
-<p><img src="/2020/08/02/Tensor%E4%B8%AD%E7%9A%84requires-grad%E5%92%8Cis-leaf/截屏2020-08-02 上午1.24.52.png" alt></p>
-<h3 id="反向传播计算梯度"><a href="#反向传播计算梯度" class="headerlink" title="反向传播计算梯度"></a>反向传播计算梯度</h3><p>根据链式求导法则， 我们可以轻松的计算出w1和w2的梯度：</p>
-<script type="math/tex; mode=display">\frac{\partial loss}{\partial w_1} = \frac{\partial loss}{\partial o}\times \frac{\partial o}{\partial h}\times \frac{\partial h}{\partial z} \times \frac{\partial z}{\partial w1}</script><script type="math/tex; mode=display">\frac{\partial loss}{\partial w_2} = \frac{\partial loss}{\partial o}\times \frac{\partial o}{\partial w_2}</script><p>以w1为例：</p>
-<p>首先计算 $\frac{\partial loss}{\partial o}$，得到o节点的梯度，然后计算$ \frac{\partial o}{\partial h}$，并乘以反向传播回来的h节点的梯度 ，得到h的梯度，然后计算$\frac{\partial h}{\partial z}$，并乘以反向传播回来的h节点的梯度，得到z的梯度，最后计算$\frac{\partial z}{\partial w1}$，乘以反向传播回来的z的梯度，得到最终的w1的梯度。</p>
-<p><img src="/2020/08/02/Tensor%E4%B8%AD%E7%9A%84requires-grad%E5%92%8Cis-leaf/截屏2020-08-02 上午2.21.47.png" alt></p>
-<p>pytorch中的tensor的backward就会进行上述的反向传播过程,并计算tensor的梯度</p>
-<h3 id="requires-grad和is-leaf参数"><a href="#requires-grad和is-leaf参数" class="headerlink" title="requires_grad和is_leaf参数"></a>requires_grad和is_leaf参数</h3><p>在tensor中有一个requires_grad参数，该参数代表在反向传播过程中需要计算该tensor的梯度，如果该tensor为true，任何通过该tensor计算得到的tensor的requires_grad都是true，因为计算图在反向传播过程中，是先计算计算图下游节点的梯度，而后计算上游节点的梯度，如果下游节点的requires_grad为false，自然也算不了上游节点的梯度。因此一般需要将我们的模型的参数的requires_grad设置为True。</p>
-<p>具体例子：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">z.requires_grad, h.requires_grad, o.requires_grad</span><br><span class="line"></span><br><span class="line">输出：(<span class="literal">True</span>, <span class="literal">True</span>, <span class="literal">True</span>, <span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
-<p>可以通过.grad来查看当前tensor的梯度:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">w1.grad, w2.grad, z.grad, h.grad, o.grad</span><br><span class="line"></span><br><span class="line">输出：</span><br><span class="line">(tensor([[<span class="number">84.</span>, <span class="number">84.</span>, <span class="number">84.</span>],</span><br><span class="line">         [<span class="number">56.</span>, <span class="number">56.</span>, <span class="number">56.</span>]]),</span><br><span class="line"> tensor([[<span class="number">140.</span>],</span><br><span class="line">         [<span class="number">140.</span>],</span><br><span class="line">         [<span class="number">140.</span>]]),</span><br><span class="line"> <span class="literal">None</span>,</span><br><span class="line"> <span class="literal">None</span>,</span><br><span class="line"> <span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
-<p>这里出现了一个奇怪的事情，w1和w2的梯度都被记录了下来，但是z,h,o中并没有记录梯度。这里其实和tensor的另一个参数is_leaf有关，这个参数与反向传播有关，后面会具体介绍，先打印一下is_leaf参数：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">w1.is_leaf, w2.is_leaf, z.is_leaf, h.is_leaf, o.is_leaf</span><br><span class="line"></span><br><span class="line">输出：(<span class="literal">True</span>, <span class="literal">True</span>, <span class="literal">False</span>, <span class="literal">False</span>, <span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
-<p>这里可以得知z,h,o并不是叶子结点，<strong>只有tensor的requires_grad参数为True同时又是叶子结点的时候，才会保存梯度在grad内，如果tensor的requires_grad为True但是不是叶子结点，那么该tensor只会计算梯度，但是不会保存梯度。</strong></p>
-<p>pytorch文档中有介绍is_leaf参数：</p>
-<blockquote>
-<p>All Tensors that have <a target="_blank" rel="noopener" href="https://pytorch.org/docs/master/autograd.html#torch.Tensor.requires_grad"><code>requires_grad</code></a> which is <code>False</code> will be leaf Tensors by convention.</p>
-<p>For Tensors that have <a target="_blank" rel="noopener" href="https://pytorch.org/docs/master/autograd.html#torch.Tensor.requires_grad"><code>requires_grad</code></a> which is <code>True</code>, they will be leaf Tensors if they were created by the user. This means that they are not the result of an operation and so <code>grad_fn</code> is None.</p>
-<p>Only leaf Tensors will have their <a target="_blank" rel="noopener" href="https://pytorch.org/docs/master/autograd.html#torch.Tensor.grad"><code>grad</code></a> populated during a call to <a target="_blank" rel="noopener" href="https://pytorch.org/docs/master/autograd.html#torch.Tensor.backward"><code>backward()</code></a>. To get <a target="_blank" rel="noopener" href="https://pytorch.org/docs/master/autograd.html#torch.Tensor.grad"><code>grad</code></a> populated for non-leaf Tensors, you can use <a target="_blank" rel="noopener" href="https://pytorch.org/docs/master/autograd.html#torch.Tensor.retain_grad"><code>retain_grad()</code></a>.</p>
-<p>Example:</p>
-</blockquote>
-<p>首先requires_grad参数为false的tensor都是叶子结点。</p>
-<p>requires_grad参数为True，并由用户创建的tensor为叶子结点，也就是说该tensor的出现不依赖于任何其他tensor。</p>
-<p>只有叶子结点才会在反向传播中，将梯度信息保存在grad中。如果非叶子结点一定要保存梯度，那么使用retain_grad()</p>
-<p>以上面三个准则来分析最开始的pytorch程序：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">x = torch.tensor([[<span class="number">3.</span>, <span class="number">2.</span>]])  <span class="comment"># 由用户创建，因此这是叶子结点，但是requires_grad为False，所以反向传播不会计算梯度</span></span><br><span class="line">label = torch.tensor([<span class="number">1.</span>])    <span class="comment"># 由用户创建，因此这是叶子结点，但是requires_grad为False，所以反向传播不会计算梯度</span></span><br><span class="line"></span><br><span class="line">w1 = torch.ones(<span class="number">2</span>, <span class="number">3</span>, requires_grad=<span class="literal">True</span>)  <span class="comment">#  由用户创建，因此这是叶子结点，同时requires_grad为True，所以grad中会保存梯度</span></span><br><span class="line">w2 = torch.ones(<span class="number">3</span>, <span class="number">1</span>, requires_grad=<span class="literal">True</span>)  <span class="comment">#  由用户创建，因此这是叶子结点，同时requires_grad为True，所以grad中会保存梯度</span></span><br><span class="line"></span><br><span class="line">z = torch.matmul(x, w1) <span class="comment"># 依赖于x和w1,不是叶子结点,但是requires_grad为True，所以反向传播会计算梯度，不会在grad中保存梯度</span></span><br><span class="line">h = torch.relu(z) <span class="comment"># 依赖于z,不是叶子结点，但是requires_grad为True，所以反向传播会计算梯度，不会在grad中保存梯度</span></span><br><span class="line">o = torch.matmul(h, w2) <span class="comment"># 依赖于h和w2,不是叶子结点，但是requires_grad为True，所以反向传播会计算梯度，不会在grad中保存梯度</span></span><br><span class="line"></span><br><span class="line">loss = (o - label)**<span class="number">2</span> <span class="comment"># 依赖于o和labels,不是叶子结点，但是requires_grad为True，所以反向传播会计算梯度，不会在grad中保存梯度</span></span><br><span class="line"></span><br><span class="line">l.backward()</span><br></pre></td></tr></table></figure>
-<p>通过计算图就可以知道，叶子结点就是计算图那些起始点。</p>
-<p><img src="/2020/08/02/Tensor%E4%B8%AD%E7%9A%84requires-grad%E5%92%8Cis-leaf/截屏2020-08-02 上午3.04.37.png" alt></p>
-<p>那么中间节点有没有可能是叶子结点？这是有可能的，pytorch文档中的第一点就提到了，如果该结点的requires_grad属性为false，那么该结点就是叶子结点，<strong>换句话说，任何不参与反向传播梯度计算的结点都是叶子结点，参与反向传播梯度计算的叶子结点就是反向传播的终点。</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">x = torch.tensor([[<span class="number">3.</span>, <span class="number">2.</span>]]) </span><br><span class="line">y = x * x</span><br><span class="line">y.is_leaf</span><br><span class="line"></span><br><span class="line">输出：true</span><br></pre></td></tr></table></figure>
-<p><strong>为什么要有叶子结点？</strong></p>
-<p>我认为叶子结点这样的设计其实很合理，叶子结点通常就是我们神经网络中的参数，这些参数需要在反向传播的之后进行更新，因此需要将这些梯度保存下来，而那些代表中间结果的结点，只是需要进行梯度计算，然后传递梯度，并不需要更新，因此不需要保存梯度计算的结果，这样的好处就是可以减少训练期间的显存的占用。</p>
-
+          <p>pytorch反向传播过程中，是否会在tensor的grad中保存梯度，与requires-grad和is-leaf这两个参数密切相关...</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/08/02/Tensor%E4%B8%AD%E7%9A%84requires-grad%E5%92%8Cis-leaf/">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -302,10 +279,10 @@
 
       <ul class="sidebar-nav motion-element">
         <li class="sidebar-nav-toc">
-          Table of Contents
+          文章目录
         </li>
         <li class="sidebar-nav-overview">
-          Overview
+          站点概览
         </li>
       </ul>
 
@@ -326,18 +303,18 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives">
           <span class="site-state-item-count">1</span>
-          <span class="site-state-item-name">posts</span>
+          <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
         <span class="site-state-item-count">1</span>
-        <span class="site-state-item-name">categories</span></a>
+        <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
         <span class="site-state-item-count">2</span>
-        <span class="site-state-item-name">tags</span></a>
+        <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
 </div>
